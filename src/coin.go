@@ -37,7 +37,7 @@ func show_coin(c *Coin) {
     var color string
 
     fmt.Printf("%15v", strings.ToUpper(c.name))
-    fmt.Printf(" %10.2f", c.price)
+    fmt.Printf(" %15.6f", c.price)
 
     //Check for change and set the color
     if c.change < 0 {
@@ -46,7 +46,7 @@ func show_coin(c *Coin) {
         color = green_color
     }
 
-    fmt.Printf(" %v%10.2f%%%v\n", color, math.Abs(c.change), color_reset)
+    fmt.Printf(" %v%10.1f%%%v\n", color, math.Abs(c.change), color_reset)
 }
 
 func FetchAndDisplay(coin string) {
