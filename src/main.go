@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "log"
     "os"
     "strings"
     "time"
@@ -13,7 +12,7 @@ var (
     coins_as_args = -1
     help = false
     add = false
-    remove = true
+    remove = false
 )
 
 func main() {
@@ -36,7 +35,7 @@ func main() {
         var lwr string
 
         for i, v := range os.Args {
-            if v[0] != '-' { continue }
+            if v[0] != '-' && i != 1 { continue }
 
             lwr = strings.ToLower(v)
 
@@ -45,7 +44,8 @@ func main() {
             } else if lwr == "-c" {
                 coins_as_args = i
             } else {
-                log.Fatalf("Invalid flag '%v'\nType 'clc --help' for more info\n", os.Args[i])
+                fmt.Printf("Invalid flag '%v'\nType 'clc --help' for more info\n", v)
+                os.Exit(1)
             }
         }
     }
@@ -57,6 +57,11 @@ func main() {
 
     if add {
         add_coins(os.Args[2:])
+        return
+    }
+
+    if remove {
+        remove_coins(os.Args[2:])
         return
     }
 

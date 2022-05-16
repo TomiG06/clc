@@ -1,7 +1,7 @@
 package main
 
 import(
-    "log"
+    "fmt"
     "os"
     "strings"
 )
@@ -19,14 +19,18 @@ func Contains(str string, slice []string) bool {
 func get_localcoins() []string {
     local_coins, err := os.ReadFile("../localcoins.txt")
 
-    if err != nil { log.Fatalln("No local coins found") }
+    if err != nil {
+        fmt.Println("No local coins found")
+        os.Exit(1)
+    }
 
     return strings.Split(strings.Trim(string(local_coins), "\n"), "\n")
 }
 
 func set_localcoins(coins_to_be_setted []string) {
     if err := os.WriteFile("../localcoins.txt", []byte(strings.Join(coins_to_be_setted, "\n")), 600); err != nil {
-        log.Fatal(err)
+        fmt.Print(err)
+        os.Exit(1)
     }
 }
 
@@ -40,5 +44,17 @@ func add_coins(ids []string) {
     }
 
     set_localcoins(append(localcoins, ids_to_be_added...))
+}
+
+func remove_coins(ids []string) {
+    localcoins := get_localcoins()
+    var coins_to_be_setted = []string{}
+
+    for _, lc := range localcoins {
+        if !Contains(lc, ids) {
+            coins_to_be_setted = append(coins_to_be_setted, lc)
+        }
+    }
+    set_localcoins(coins_to_be_setted)
 }
 
