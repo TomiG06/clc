@@ -12,25 +12,26 @@ var (
     local = false
     coins_as_args = -1
     help = false
+    add = false
+    remove = true
 )
-
-var HelpCommand = []string{"--help", "-h"}
-
-func Contains(str string, slice []string) bool {
-    for _, v := range slice {
-        if v == str {
-            return true
-        }
-    }
-    return false
-}
 
 func main() {
     argc := len(os.Args)
     coins := []string{};
 
     if argc == 1 {
+        os.Args = append(os.Args, "--help")
+    }
+
+    lwr := strings.ToLower(os.Args[1])
+
+    if lwr == "--help" {
         help = true
+    } else if lwr == "--add" {
+        add = true
+    } else if lwr == "--remove" {
+        remove = true
     } else {
         var lwr string
 
@@ -39,9 +40,7 @@ func main() {
 
             lwr = strings.ToLower(v)
 
-            if Contains(lwr, HelpCommand) {
-                help = true
-            } else if lwr == "-l" {
+            if lwr == "-l" {
                 local = true
             } else if lwr == "-c" {
                 coins_as_args = i
@@ -52,16 +51,17 @@ func main() {
     }
 
     if help {
-        fmt.Println("usage: 'clc [-l, -c [ids]]'")
+        fmt.Println("usage: 'clc [--help, --remove, --add] [-l, -c] [id's]'")
+        return
+    }
+
+    if add {
+        add_coins(os.Args[2:])
         return
     }
 
     if local {
-        local_coins, err := os.ReadFile("../localcoins.txt")
-
-        if err != nil { log.Fatalln("No local coins found") }
-
-        coins = strings.Split(strings.Trim(string(local_coins), " \n"), ",")
+        coins = get_localcoins()
     }
 
     if coins_as_args > 0 {
