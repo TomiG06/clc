@@ -39,7 +39,7 @@ func add_coins(ids []string) {
     var ids_to_be_added = []string{}
     for _, id := range ids {
         if !Contains(id, localcoins) {
-            ids_to_be_added = append(ids_to_be_added, id)
+            ids_to_be_added = append(ids_to_be_added, strings.ToLower(id))
         }
     }
 
