@@ -4,7 +4,7 @@
 Fetches prices from the web and displays them in the command line.
 I built this because I wanted to check some cryptocurrency prices while I am working on stuff in the command line
 
-More about the API [here]("https://www.coingecko.com/en/api/documentation")
+More about the API [here](https://www.coingecko.com/en/api/documentation)
 
 ## Setup
 ```
