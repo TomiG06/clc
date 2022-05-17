@@ -2,6 +2,7 @@ package main
 
 import(
     "fmt"
+    "net/http"
     "os"
     "strings"
 )
@@ -56,5 +57,20 @@ func remove_coins(ids []string) {
         }
     }
     set_localcoins(coins_to_be_setted)
+}
+
+func test_ids(ids []string) *string {
+    client := http.Client{}
+
+    for _, id := range ids {
+        req, _ := http.NewRequest("GET", API + strings.ToLower(id) + API_params, nil)
+        res, _ := client.Do(req)
+
+        if res.StatusCode == http.StatusNotFound {
+            return &id
+        }
+    }
+
+    return nil
 }
 

@@ -56,6 +56,13 @@ func main() {
     }
 
     if add {
+        fmt.Println("Testing id validity...")
+
+        if id := test_ids(os.Args[2:]); id != nil {
+            fmt.Printf("ID '%v' is invalid\n", *id)
+            os.Exit(1)
+        }
+
         add_coins(os.Args[2:])
         return
     }
