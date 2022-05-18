@@ -36,9 +36,6 @@ const (
 func show_coin(c *Coin) {
     var color string
 
-    fmt.Printf("%15v", strings.ToUpper(c.name))
-    fmt.Printf(" %15.6f", c.price)
-
     //Check for change and set the color
     if c.change < 0 {
         color = red_color
@@ -46,7 +43,7 @@ func show_coin(c *Coin) {
         color = green_color
     }
 
-    fmt.Printf(" %v%10.1f%%%v\n", color, math.Abs(c.change), color_reset)
+    fmt.Printf("%15v %15.6f %v%10.1f%%%v\n", strings.ToUpper(c.name), c.price, color, math.Abs(c.change), color_reset)
 }
 
 func FetchAndDisplay(coin string) {
@@ -78,6 +75,5 @@ func FetchAndDisplay(coin string) {
     buffer.price = data["market_data"].(map[string]interface{})["current_price"].(map[string]interface{})["usd"].(float64)
 
     show_coin(&buffer)
-
 }
 
