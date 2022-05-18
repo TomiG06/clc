@@ -87,7 +87,6 @@ func main() {
 
     for _, coin := range coins {
         go FetchAndDisplay(coin)
-        time.Sleep(time.Millisecond * 100)
     }
 
     time.Sleep(time.Second * 1)
