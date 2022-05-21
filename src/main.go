@@ -19,10 +19,6 @@ func main() {
     argc := len(os.Args)
     coins := []string{};
 
-    if argc == 1 {
-        os.Args = append(os.Args, "--help")
-    }
-
     lwr := strings.ToLower(os.Args[1])
 
     if lwr == "--help" {
