@@ -18,6 +18,7 @@ $ ./setup.sh
 * `-c`          fetch coins entered
 * `--add`       add coins entered to local coins
 * `--remove`    remove coins entered from local coins
+* `--list`      display localcoins
 
 ## Local Coins
 Let's say you are interested in checking the prices of coins x, y, z and a, but you don't want to pass them to the program every time you run it. 
