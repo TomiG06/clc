@@ -1,9 +1,23 @@
-#!/bin/bash
+#!/bin/bash -e
 cd $(dirname $(readlink -f $0))/src/
 
 if !(( $# )); then
     set -- "--help"
 fi
 
-./main $*
+#These shit can easily be done with bash
+HELP="--help"
+LIST="--list"
+
+argtolower=$(echo $1 | tr "[:upper:]" "[:lower:]")
+
+if [[ $argtolower == $LIST ]]; then
+    cat ../localcoins.txt
+    echo
+elif [[ $argtolower == $HELP ]]; then
+    echo "usage: clc [--help] [--list] [--remove] [--add]
+           [-l, -c <ids>]"
+else
+    ./main $*
+fi
 

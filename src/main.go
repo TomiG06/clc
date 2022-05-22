@@ -10,7 +10,6 @@ import (
 var (
     local = false
     coins_as_args = -1
-    help = false
     add = false
     remove = false
 )
@@ -21,9 +20,7 @@ func main() {
 
     lwr := strings.ToLower(os.Args[1])
 
-    if lwr == "--help" {
-        help = true
-    } else if lwr == "--add" {
+    if lwr == "--add" {
         add = true
     } else if lwr == "--remove" {
         remove = true
@@ -44,11 +41,6 @@ func main() {
                 os.Exit(1)
             }
         }
-    }
-
-    if help {
-        fmt.Println("usage: 'clc [--help, --remove, --add] [-l, -c] [id's]'")
-        return
     }
 
     if add {
