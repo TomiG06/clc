@@ -37,6 +37,18 @@ func set_localcoins(coins_to_be_setted []string) {
 
 func add_coins(ids []string) {
     localcoins := get_localcoins()
+    /*
+        If the following condition is true
+        it means that the file is empty and
+        because we don't want to add an empty
+        string in localcoins, we are setting
+        localcoins an empty string array
+    */
+    if localcoins[0] == "" {
+        localcoins = []string{}
+    }
+
+
     var ids_to_be_added = []string{}
     for _, id := range ids {
         if !Contains(id, localcoins) {
