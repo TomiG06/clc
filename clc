@@ -13,7 +13,6 @@ argtolower=$(echo $1 | tr "[:upper:]" "[:lower:]")
 
 if [[ $argtolower == $LIST ]]; then
     cat ../localcoins.txt
-    echo
 elif [[ $argtolower == $HELP ]]; then
     echo "usage: clc [--help] [--list] [--remove] [--add]
            [-l, -c <ids>]"

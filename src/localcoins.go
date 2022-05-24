@@ -29,7 +29,25 @@ func get_localcoins() []string {
 }
 
 func set_localcoins(coins_to_be_setted []string) {
-    if err := os.WriteFile("../localcoins.txt", []byte(strings.Join(coins_to_be_setted, "\n")), 600); err != nil {
+    /*
+        Here we are joining the coins in a single string
+        with a new line between them.
+    */
+    var bytes_to_write = []byte(strings.Join(coins_to_be_setted, "\n"))
+
+    /*
+        if we have stuff to write, we also want to add
+        another new line character (10 in ASCII) in the
+        end of the string
+
+        in case there are no stuff to write, we don't want
+        to add it
+    */
+    if len(bytes_to_write) != 0 {
+        bytes_to_write = append(bytes_to_write, 10)
+    }
+
+    if err := os.WriteFile("../localcoins.txt", bytes_to_write, 600); err != nil {
         fmt.Print(err)
         os.Exit(1)
     }
