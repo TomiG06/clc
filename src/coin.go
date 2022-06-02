@@ -4,7 +4,6 @@ import (
     "encoding/json"
     "fmt"
     "io/ioutil"
-    "math"
     "net/http"
     "os"
     "strings"
@@ -33,25 +32,12 @@ const (
     API_params string = "?localization=false&tickers=false&developer_data=false&sparkline=false"
 )
 
-func show_coin(c *Coin) {
-    var color string
-
-    //Check for change and set the color
-    if c.change < 0 {
-        color = red_color
-    } else {
-        color = green_color
-    }
-
-    fmt.Printf("%15v %15.6f %v%10.1f%%%v\n", strings.ToUpper(c.name), c.price, color, math.Abs(c.change), color_reset)
-}
-
-func FetchAndDisplay(coin string) {
+func FetchAndDisplay(coin_id string) {
     Client := http.Client{}
     var data map[string]interface{}
-    var buffer Coin
+    var coin Coin
 
-    req, _ := http.NewRequest("GET", API + strings.ToLower(coin) + API_params, nil)
+    req, _ := http.NewRequest("GET", API + strings.ToLower(coin_id) + API_params, nil)
     req.Header.Set("Content-type", "application/json")
 
     //Fetch data
@@ -62,7 +48,7 @@ func FetchAndDisplay(coin string) {
         if a 404 error occured then the id is not valid
     */
     if res.StatusCode == http.StatusNotFound {
-        fmt.Printf("Invalid id '%v'\n", coin)
+        fmt.Printf("Invalid id '%v'\n", coin_id)
         os.Exit(1)
     }
 
@@ -70,10 +56,19 @@ func FetchAndDisplay(coin string) {
     res.Body.Close()
 
     json.Unmarshal(body, &data)
-    buffer.change = data["market_data"].(map[string]interface{})["price_change_percentage_24h"].(float64)
-    buffer.name = data["name"].(string)
-    buffer.price = data["market_data"].(map[string]interface{})["current_price"].(map[string]interface{})["usd"].(float64)
+    coin.change = data["market_data"].(map[string]interface{})["price_change_percentage_24h"].(float64)
+    coin.name = data["name"].(string)
+    coin.price = data["market_data"].(map[string]interface{})["current_price"].(map[string]interface{})["usd"].(float64)
 
-    show_coin(&buffer)
+    var color string
+
+    //Check for change and set the color
+    if coin.change < 0 {
+        color = red_color
+    } else {
+        color = green_color
+    }
+
+    fmt.Printf("%15v %15.6f %v%10.1f%%%v\n", strings.ToUpper(coin.name), coin.price, color, coin.change, color_reset)
 }
 
