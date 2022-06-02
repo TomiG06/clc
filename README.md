@@ -24,5 +24,3 @@ $ ./setup.sh
 Let's say you are interested in checking the prices of coins x, y, z and a, but you don't want to pass them to the program every time you run it. 
 This is why local coins exist. The only thing you have to do is to add them to your local coins by running `clc --add x y z a` command and every time you want to check them just run `clc -l`. In case you want to remove let's say coin y, the only thing you have to do is to run the `clc --remove y` command
 
-## TODOs
-- make user able to turn of concurrenct coin fetching
