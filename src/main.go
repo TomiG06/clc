@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "os"
-    "strings"
     "time"
 )
 
@@ -18,23 +17,17 @@ func main() {
     argc := len(os.Args)
     coins := []string{};
 
-    lwr := strings.ToLower(os.Args[1])
-
-    if lwr == "--add" {
+    if os.Args[1] == "--add" {
         add = true
-    } else if lwr == "--remove" {
+    } else if os.Args[1] == "--remove" {
         remove = true
     } else {
-        var lwr string
-
         for i, v := range os.Args {
             if v[0] != '-' && i != 1 { continue }
 
-            lwr = strings.ToLower(v)
-
-            if lwr == "-l" {
+            if v == "-l" {
                 local = true
-            } else if lwr == "-c" {
+            } else if v == "-c" {
                 coins_as_args = i
             } else {
                 fmt.Printf("Invalid flag '%v'\nType 'clc --help' for more info\n", v)

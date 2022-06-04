@@ -9,11 +9,9 @@ fi
 HELP="--help"
 LIST="--list"
 
-argtolower=$(echo $1 | tr "[:upper:]" "[:lower:]")
-
-if [[ $argtolower == $LIST ]]; then
+if [[ $1 == $LIST ]]; then
     cat ../localcoins.txt
-elif [[ $argtolower == $HELP ]]; then
+elif [[ $1 == $HELP ]]; then
     echo "usage: clc [--help] [--list] [--remove] [--add]
            [-l, -c <ids>]"
 else
