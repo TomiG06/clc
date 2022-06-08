@@ -3,7 +3,7 @@ package main
 import (
     "fmt"
     "os"
-    "time"
+    "sync"
 )
 
 var (
@@ -66,10 +66,13 @@ func main() {
         }
     }
 
+    var wg sync.WaitGroup
+
     for _, coin := range coins {
-        go FetchAndDisplay(coin)
+        wg.Add(1)
+        go FetchAndDisplay(coin, &wg)
     }
 
-    time.Sleep(time.Second * 1)
+    wg.Wait()
 }
 

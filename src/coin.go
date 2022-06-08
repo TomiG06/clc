@@ -7,6 +7,7 @@ import (
     "net/http"
     "os"
     "strings"
+    "sync"
 )
 
 //we are only interested in these characteristics of every coin
@@ -32,7 +33,7 @@ const (
     API_params string = "?localization=false&tickers=false&developer_data=false&sparkline=false"
 )
 
-func FetchAndDisplay(coin_id string) {
+func FetchAndDisplay(coin_id string, wg *sync.WaitGroup) {
     Client := http.Client{}
     var data map[string]interface{}
     var coin Coin
@@ -70,5 +71,7 @@ func FetchAndDisplay(coin_id string) {
     }
 
     fmt.Printf("%15v %15.6f %v%10.1f%%%v\n", strings.ToUpper(coin.name), coin.price, color, coin.change, color_reset)
+
+    wg.Done()
 }
 
