@@ -5,13 +5,9 @@ if !(( $# )); then
     set -- "--help"
 fi
 
-#These shit can easily be done with bash
-HELP="--help"
-LIST="--list"
-
-if [[ $1 == $LIST ]]; then
+if [[ $1 == "--list" ]]; then
     cat ../localcoins.txt
-elif [[ $1 == $HELP ]]; then
+elif [[ $1 == "--help" ]]; then
     echo "usage: clc [--help] [--list] [--remove] [--add]
            [-l, -c <ids>]"
 else
