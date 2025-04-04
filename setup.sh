@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd src
-go build main.go coin.go localcoins.go
+make
 
 cd ../
 touch localcoins.txt
