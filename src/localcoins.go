@@ -4,17 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 )
-
-func Contains(str string, slice []string) bool {
-	for _, v := range slice {
-		if v == str {
-			return true
-		}
-	}
-	return false
-}
 
 func get_localcoins() []string {
 	local_coins, err := os.ReadFile("../localcoins.txt")
@@ -67,7 +59,7 @@ func add_coins(ids []string) {
 
 	var ids_to_be_added = []string{}
 	for _, id := range ids {
-		if !Contains(id, localcoins) {
+		if !slices.Contains(localcoins, id) {
 			ids_to_be_added = append(ids_to_be_added, strings.ToLower(id))
 		}
 	}
@@ -80,7 +72,7 @@ func remove_coins(ids []string) {
 	var coins_to_be_setted = []string{}
 
 	for _, lc := range localcoins {
-		if !Contains(lc, ids) {
+		if !slices.Contains(ids, lc) {
 			coins_to_be_setted = append(coins_to_be_setted, lc)
 		}
 	}

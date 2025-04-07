@@ -52,6 +52,8 @@ func Display(coin *Coin) {
 }
 
 func FetchAndDisplay(coin_id string, wg *sync.WaitGroup) {
+	defer wg.Done()
+
 	Client := http.Client{}
 	var data map[string]interface{}
 	var coin Coin
@@ -89,5 +91,4 @@ func FetchAndDisplay(coin_id string, wg *sync.WaitGroup) {
 	coin.price = data["market_data"].(map[string]interface{})["current_price"].(map[string]interface{})["usd"].(float64)
 
 	Display(&coin)
-	wg.Done()
 }
