@@ -68,20 +68,20 @@ func FetchAndDisplay(coin_id string, wg *sync.WaitGroup) {
 	defer res.Body.Close()
 
 	/*
-	   Check if response was completed successfully
-	   if a 404 error occurs then the id is not valid
-	   if a 429 error occurs then there were too many requests
-	   (we are using the free api version)
+		   Check if response was completed successfully
+		   if a 404 error occurs then the id is not valid
+		   if a 429 error occurs then there were too many requests
+		   (we are using the free api version)
 
-       return is cleaner, even if everyone will end up doing it
+	       return is cleaner, even if everyone will end up doing it
 	*/
 	if res.StatusCode == http.StatusNotFound {
 		fmt.Printf("Invalid id '%v'\n", coin_id)
 		return
 	} else if res.StatusCode == http.StatusTooManyRequests {
 		once.Do(func() {
-            fmt.Println("Too many requests. Try again in a couple of minutes.")
-        })
+			fmt.Println("Too many requests. Try again in a couple of minutes.")
+		})
 		return
 	}
 
