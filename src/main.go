@@ -61,7 +61,6 @@ func main() {
 	}
 
 	if coins_as_args > 0 {
-
 		for i := coins_as_args + 1; i < argc && os.Args[i][0] != '-'; i++ {
 			if !slices.Contains(coins, os.Args[i]) {
 				coins = append(coins, os.Args[i])

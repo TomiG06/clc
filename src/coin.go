@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 )
@@ -32,6 +31,9 @@ const (
 	API        string = "https://api.coingecko.com/api/v3/coins/"
 	API_params string = "?localization=false&tickers=false&developer_data=false&sparkline=false"
 )
+
+// Print TooManyRequests message once
+var once sync.Once = sync.Once{}
 
 func Display(coin *Coin) {
 	var color string
@@ -63,6 +65,7 @@ func FetchAndDisplay(coin_id string, wg *sync.WaitGroup) {
 
 	//Fetch data
 	res, _ := Client.Do(req)
+	defer res.Body.Close()
 
 	/*
 	   Check if response was completed successfully
@@ -70,20 +73,19 @@ func FetchAndDisplay(coin_id string, wg *sync.WaitGroup) {
 	   if a 429 error occurs then there were too many requests
 	   (we are using the free api version)
 
-	   TODO: Exit from central thread,
-	       os.Exit inside the goroutine
-	       is kind of forcing and unclean
+       return is cleaner, even if everyone will end up doing it
 	*/
 	if res.StatusCode == http.StatusNotFound {
 		fmt.Printf("Invalid id '%v'\n", coin_id)
-		os.Exit(1)
+		return
 	} else if res.StatusCode == http.StatusTooManyRequests {
-		fmt.Println("Too many requests. Try again in a couple of minutes.")
-		os.Exit(1)
+		once.Do(func() {
+            fmt.Println("Too many requests. Try again in a couple of minutes.")
+        })
+		return
 	}
 
 	body, _ := ioutil.ReadAll(res.Body)
-	res.Body.Close()
 
 	json.Unmarshal(body, &data)
 	coin.change = data["market_data"].(map[string]interface{})["price_change_percentage_24h"].(float64)
