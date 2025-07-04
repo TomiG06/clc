@@ -14,45 +14,52 @@ var (
 	remove        = false
 )
 
-func main() {
-	argc := len(os.Args)
-	coins := []string{}
-
-	if os.Args[1] == "--add" {
+func parse(args []string) {
+	if args[1] == "--add" {
 		add = true
-	} else if os.Args[1] == "--remove" {
-		remove = true
-	} else {
-		for i, v := range os.Args {
-			if v[0] != '-' && i != 1 {
-				continue
-			}
+		return
+	}
 
-			if v == "-l" {
-				local = true
-			} else if v == "-c" {
-				coins_as_args = i
-			} else {
-				fmt.Printf("Invalid flag '%v'\nType 'clc --help' for more info\n", v)
-				os.Exit(1)
-			}
+	if args[1] == "--remove" {
+		remove = true
+		return
+	}
+
+	for i, v := range args {
+		if v[0] != '-' && i != 1 {
+			continue
+		}
+
+		if v == "-l" {
+			local = true
+		} else if v == "-c" {
+			coins_as_args = i
+		} else {
+			fmt.Printf("Invalid flag '%v'\nType 'clc --help' for more info\n", v)
+			os.Exit(1)
 		}
 	}
+}
+
+func main() {
+	var coins []string
+	args := os.Args
+	argc := len(args)
+
+	parse(args)
 
 	if add {
 		fmt.Println("Testing id validity...")
-
-		if id := test_ids(os.Args[2:]); id != nil {
+		if id := test_ids(args[2:]); id != nil {
 			fmt.Printf("ID '%v' is invalid\n", *id)
 			os.Exit(1)
 		}
-
-		add_coins(os.Args[2:])
+		add_coins(args[2:])
 		return
 	}
 
 	if remove {
-		remove_coins(os.Args[2:])
+		remove_coins(args[2:])
 		return
 	}
 
@@ -61,9 +68,9 @@ func main() {
 	}
 
 	if coins_as_args > 0 {
-		for i := coins_as_args + 1; i < argc && os.Args[i][0] != '-'; i++ {
-			if !slices.Contains(coins, os.Args[i]) {
-				coins = append(coins, os.Args[i])
+		for i := coins_as_args + 1; i < argc && args[i][0] != '-'; i++ {
+			if !slices.Contains(coins, args[i]) {
+				coins = append(coins, args[i])
 			}
 		}
 	}
