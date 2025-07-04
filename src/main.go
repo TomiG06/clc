@@ -30,15 +30,27 @@ func parse(args []string) {
 			continue
 		}
 
-		if v == "-l" {
+		switch v {
+		case "-l":
 			local = true
-		} else if v == "-c" {
+		case "-c":
 			coins_as_args = i
-		} else {
+		default:
 			fmt.Printf("Invalid flag '%v'\nType 'clc --help' for more info\n", v)
 			os.Exit(1)
 		}
 	}
+}
+
+func fetchCoins(coins []string) {
+	var wg sync.WaitGroup
+
+	for _, coin := range coins {
+		wg.Add(1)
+		FetchAndDisplay(coin, &wg)
+	}
+
+	wg.Wait()
 }
 
 func main() {
@@ -75,12 +87,5 @@ func main() {
 		}
 	}
 
-	var wg sync.WaitGroup
-
-	for _, coin := range coins {
-		wg.Add(1)
-		go FetchAndDisplay(coin, &wg)
-	}
-
-	wg.Wait()
+	fetchCoins(coins)
 }
