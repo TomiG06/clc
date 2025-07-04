@@ -1,5 +1,7 @@
 # clc
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/TomiG06/clc)](https://goreportcard.com/report/github.com/TomiG06/clc)
+
 ## Description
 Fetches prices from the web and displays them in the command line.
 Its purpose of existance is for someone to be able to check the real time prices of their favourite cryptocurrencies without having to open a browser tab
